@@ -8,8 +8,11 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <body>
-    <input type="file" id="filebtn" name="选择图片" multiple />
+    <input type="file" id="fileBtn" name="选择图片" multiple accept=".jpg, .jpeg" />
+    <br/>
+    <input type="button" id="checkBtn" value="查看结果" />
     <pre id="allMetaDataSpan"></pre>
 </body>
+<script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="function.js"></script>
 </html>
