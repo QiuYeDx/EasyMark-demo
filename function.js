@@ -33,24 +33,6 @@
 //     image.src = img; //base64str
 // }
 
-var fileBtn = document.querySelector('#fileBtn');
-
-fileBtn.addEventListener('change', function() {
-    picManager.re0();
-    for(var i=0; i<this.files.length; i++){
-        var fileReader = new FileReader();
-        fileReader.onload = function(res) {
-            var dataUrl = res.currentTarget.result;
-            var newPic = new Pic(dataUrl);
-            newPic.initTags();
-            picManager.addPic(newPic);
-        }
-        var file = this.files[i];
-        if (!file) continue;
-        fileReader.readAsDataURL(file);
-    }
-})
-
 // function getExif(img){
 //     // console.log("func getExif(img);");
 //     // console.log(img);
@@ -63,6 +45,35 @@ fileBtn.addEventListener('change', function() {
 //     image.src = img; //base64str
 // }
 
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+} 
+
+var fileBtn = document.querySelector('#fileBtn');
+
+// get dataUrl
+fileBtn.addEventListener('change', function() {
+    picManager.re0();
+    for(var i=0; i<this.files.length; i++){
+        var fileReader = new FileReader();
+        fileReader.onload = function(res) {
+            var dataUrl = res.currentTarget.result;
+            var newPic = new Pic(dataUrl);
+            newPic.initTags();
+            picManager.addPic(newPic);
+        }
+        var file = this.files[i];
+        if (!file) continue;
+        picManager.addInfo(file.name);
+        fileReader.readAsDataURL(file);
+    }
+})
+
 var checkBtn = document.querySelector('#checkBtn');
 
 checkBtn.addEventListener('click', function() {
@@ -70,4 +81,13 @@ checkBtn.addEventListener('click', function() {
         console.log(picManager.getAllPic()[i].getTags());
         // console.log(picManager.getAllPic()[i].getDataUrl());
     }
+})
+
+var downloadA = document.querySelector('#a_dl');
+
+downloadA.addEventListener('click', function() {
+    // downloadA.href = picManager.getAllPic()[0].getDataUrl();
+    // downloadA.download = picManager.getAllInfo()[0];
+    // console.log(picManager.getAllPic()[0].getDataUrl());
+    saveAs(dataURLtoBlob(picManager.getAllPic()[0].getDataUrl()), "./output/out1.jpg");
 })

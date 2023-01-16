@@ -1,9 +1,13 @@
 class PicManager{
     constructor(array = new Array()) {
         this._picArray = array;
+        this._infoList = new Array();
     }
     addPic(pic){
         this._picArray.push(pic);
+    }
+    addInfo(info){
+        this._infoList.push(info);
     }
     getNumOfPic(){
         return this._picArray.length;
@@ -11,8 +15,12 @@ class PicManager{
     getAllPic(){
         return this._picArray;
     }
+    getAllInfo(){
+        return this._infoList;
+    }
     re0(){
         this._picArray = new Array();
+        this._infoList = new Array();
     }
 }
 
@@ -26,11 +34,11 @@ class Pic{
         var image = new Image();
         let self = this;
         image.onload = function(){
-            console.log('image loaded');
+            // console.log('image loaded');
             EXIF.getData(image, function(){
                 self.tags = EXIF.getAllTags(this);
-                console.log("initTags():");
-                console.log(EXIF.pretty(this));
+                // console.log("initTags():");
+                // console.log(EXIF.pretty(this));
             });
         };
         image.src = this.dataUrl;
